@@ -1,16 +1,10 @@
-*,
-::after,
-::before {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+.expensePage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
 }
-
-body {
-  background-color: gray;
-  color: #fde7e7;
-}
-
 table {
   border-collapse: collapse;
   width: 100%;

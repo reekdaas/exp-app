@@ -1,84 +1,59 @@
+import {
+  ADD_EXPNESE_SUCCESS,
+  ADD_INCOME_SUCCESS,
+  FAILED_OPERATION,
+  FETCH_EXPENSES_SUCCESS,
+  FETCH_INCOME_SUCCESS,
+  FETCH_SAVINGS_SUCCESS,
+} from "../utils";
+
 const initialState = {
   income: [],
   expenses: [],
   savings: [],
-  loading: false,
+
   error: null,
 };
 
-const financeReducer = (state = initialState, action) => {
+export const financeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "FETCH_INCOME_SUCCESS":
+    case FETCH_INCOME_SUCCESS:
       return {
         ...state,
         income: action.payload,
-        loading: false,
         error: null,
       };
-    case "FETCH_EXPENSES_SUCCESS":
+    case FETCH_EXPENSES_SUCCESS:
       return {
         ...state,
         expenses: action.payload,
-        loading: false,
         error: null,
       };
-    case "FETCH_SAVINGS_SUCCESS":
+    case FETCH_SAVINGS_SUCCESS:
       return {
         ...state,
         savings: action.payload,
-        loading: false,
         error: null,
       };
-    case "FETCH_INCOME_FAILURE":
+    case ADD_INCOME_SUCCESS: {
       return {
         ...state,
-        loading: false,
-        error: "Error fetching income data",
+        income: [...state.income, action.payload],
+        savings: state.savings + Number(action.payload),
       };
-    case "FETCH_EXPENSES_FAILURE":
+    }
+    case ADD_EXPNESE_SUCCESS: {
       return {
         ...state,
-        loading: false,
-        error: "Error fetching expense data",
+        expenses: [...state.expenses, action.payload],
+        savings: state.savings - Number(action.payload),
       };
-    case "FETCH_SAVINGS_FAILURE":
-      return {
-        ...state,
-        loading: false,
-        error: "Error fetching savings data",
-      };
-    case "ADD_ENTRY_FAILURE":
-      return {
-        ...state,
-        loading: false,
-        error: "Error fetching or adding data",
-      };
-    case "ADD_ENTRY_SUCCESS":
-      if (action.payload.entryType === "income") {
-        return {
-          ...state,
-          income: [...state.income, action.payload],
-          loading: false,
-          error: null,
-        };
-      } else if (action.payload.entryType === "expenses") {
-        return {
-          ...state,
-          expenses: [...state.expenses, action.payload],
-          loading: false,
-          error: null,
-        };
-      } else {
-        return {
-          ...state,
-          savings: [...state.savings, action.payload],
-          loading: false,
-          error: null,
-        };
-      }
+    }
+    case FAILED_OPERATION: {
+      return { ...state, error: "Some Error Occurs during processing" };
+    }
+
     default:
       return state;
   }
 };
-
-export default financeReducer;
